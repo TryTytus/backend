@@ -15,21 +15,22 @@ public partial class ApplicationDbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
+        // this.ChangeTracker.LazyLoadingEnabled = false;
     }
 
-    public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+    public DbSet<AspNetRole> AspNetRoles { get; set; }
 
-    public virtual DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; }
+    public DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; }
 
-    public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+    public DbSet<AspNetUser> AspNetUsers { get; set; }
 
-    public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+    public DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
 
-    public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+    public DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
 
-    public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
+    public DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
 
-    public virtual DbSet<Post> Posts { get; set; }
+    public DbSet<Post> Posts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseNpgsql("Host=localhost;Database=twitter;Username=postgres;Password=example");
@@ -71,6 +72,8 @@ public partial class ApplicationDbContext
             entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
             entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
             entity.Property(e => e.UserName).HasMaxLength(256);
+
+            entity.HasMany<Post>().WithOne().HasForeignKey(e => e.UserId);
 
             // entity.HasMany(d => d.Roles).WithMany(p => p.Users)
             //     .UsingEntity<Dictionary<string, object>>(
@@ -121,9 +124,8 @@ public partial class ApplicationDbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.Posts).HasForeignKey(d => d.UserId);
         });
-
-        OnModelCreatingPartial(modelBuilder);
+        
+        
     }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    
 }

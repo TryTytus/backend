@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend;
 
@@ -19,7 +20,9 @@ public partial class Post
 
     public DateTime UpdatedAt { get; set; }
 
-    public int UserId { get; set; }
 
-    public virtual AspNetUser User { get; set; } = null!;
+    public int UserId { get; set; }
+    
+    [ForeignKey("UserId" )]
+    public AspNetUser User { get; set; } = null!;
 }

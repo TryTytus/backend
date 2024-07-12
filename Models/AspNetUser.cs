@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using backend.Models;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace backend;
 
@@ -14,13 +16,20 @@ public partial class AspNetUser : IdentityUser<int>
 
     public DateTime CreatedAt { get; set; }
 
-    public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; } = new List<AspNetUserClaim>();
 
-    public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; } = new List<AspNetUserLogin>();
 
-    public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; } = new List<AspNetUserToken>();
+    public virtual ICollection<Post> Posts { get; set; } = default!;
 
-    public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 
-    public virtual ICollection<AspNetUserRole> UserRoles { get; set; } = new List<AspNetUserRole>();
+    public ICollection<AspNetUserClaim>? AspNetUserClaims { get; set; }
+
+
+    public ICollection<AspNetUserLogin>? AspNetUserLogins { get; set; }
+
+
+    public ICollection<AspNetUserToken>? AspNetUserTokens { get; set; }
+    
+
+
+    public ICollection<AspNetUserRole>? UserRoles { get; set; }
 }
